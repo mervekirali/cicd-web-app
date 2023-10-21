@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/Berkay542/cicdwebapp.git'
+        //git branch: 'main', url: 'https://github.com/mervekirali/cicd-web-app.git'
       }
     }
     stage('Build and Test') {
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://100.26.219.23:9000"
+        SONAR_URL = "http://18.234.168.121:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -47,14 +47,14 @@ pipeline {
     }
     stage('Update Deployment File') {
         environment {
-            GIT_REPO_NAME = "cicdwebapp"
-            GIT_USER_NAME = "Berkay542"
+            GIT_REPO_NAME = "cicd-web-app"
+            GIT_USER_NAME = "mervekirali"
         }
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
-                    git config user.email "akcanberks@gmail.com"
-                    git config user.name "Berkay542"
+                    git config user.email "merve@kirali.net"
+                    git config user.name "mervekirali"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                     git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
